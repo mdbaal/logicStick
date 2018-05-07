@@ -1,2 +1,0 @@
-# logicStick
-logistics game
