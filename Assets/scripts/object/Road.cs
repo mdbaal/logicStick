@@ -7,13 +7,12 @@ public class Road : MonoBehaviour {
     GameObject[] roadPieces;
     public float animationSpeed = 0;
     int index = 0;
-    int size;
 
     public void init(GameObject[] road)
     {
         roadPieces = road;
         animationSpeed = .5f;
-        size = roadPieces.Length;
+        this.gameObject.GetComponent<Conveyer>().length = this.roadPieces.Length;
     }
 
     void animate()
@@ -36,8 +35,8 @@ public class Road : MonoBehaviour {
         if (animationSpeed < 0)
         { 
             animate();
-            //transfer();
-            animationSpeed = .5f;
+            this.GetComponent<Conveyer>().send();
+            animationSpeed = .2f;
         }
         animationSpeed -= Time.deltaTime;
     }

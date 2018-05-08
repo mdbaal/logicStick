@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Builder : MonoBehaviour {
 
-    public GameObject[] objects;
+    public GameObject[] BuildPieces;
     public float frequencyRoad;
     //public for testing
     public bool factoryBuild;
     public bool collectorBuild;
     public bool roadBuild;
 
-    Vector3 p1 = new Vector3(0, 0, 0);
-    Vector3 p2 = new Vector3(0, 0, 0);
+    GameObject sender;
+    GameObject receiver;
     GameObject hitObject;
+
 
     private void Update()
     {
@@ -75,55 +76,78 @@ public class Builder : MonoBehaviour {
         }else if (roadBuild)
         {
             
-            if(Input.GetMouseButtonDown(0) && p1.z != 1)
+            if(Input.GetMouseButtonDown(0) && sender == null)
             {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0,0,-1));
+                if (hit.transform == null) return;
                 if (hit.transform.CompareTag("conveyer"))
                 {
                     hitObject = hit.transform.gameObject;
                     hitObject.AddComponent<HighLight>();
-                    p1 = hit.transform.position;
-                    p1.z = 1;
+                    sender = hit.transform.gameObject;
                 }
                 
             }
-            else if(Input.GetMouseButtonDown(0) && p2.z != 1)
+            else if(Input.GetMouseButtonDown(0) && receiver == null)
             {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
+                if (hit.transform == null) return;
                 if (hit.transform.CompareTag("conveyer"))
                 {
                     Destroy(hitObject.GetComponent<HighLight>());
-                    p2  = hit.transform.position;
-                    p2.z = 1;
+                    receiver  = hit.transform.gameObject;
+                    
                 }
-                buildRoad(p1, p2);
+                buildRoad(sender, receiver);
             }
         }
 
     }
     void buildBuilding(int index)
     {
-        //0 or 1, 0 = factoryBuild, 1 = collectorBuild
+        //0 or 1 || 0 = factory, 1 = collector
         if(index != 0 && index != 1)
         {
             return;
         }
 
-        Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        buildPos.z = 1;
-       
-        Instantiate(objects[index], buildPos, Quaternion.identity,this.transform);
+        if (index == 1)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
+            if (hit.transform == null) return;
+            if (hit.transform.CompareTag("deposit"))
+            {
+                Vector3 buildPos = hit.transform.position;
+                buildPos.z = 1;
+                GameObject g = Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
+                g.GetComponent<Collector>().deposit = hit.transform.gameObject.GetComponent<Deposit>();
+                collectorBuild = false;
+            }
+        }
+        else
+        {
+            Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            buildPos.z = 1;
+            Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
+            factoryBuild = false;
+        }
     }
 
-    void buildRoad(Vector3 pos1,Vector3 pos2)
+    void buildRoad(GameObject pos1,GameObject pos2)
     {
+        if (pos1 == null || pos2 == null) return;
         GameObject road = new GameObject();
         road.name = "road";
         road.AddComponent<Road>();
+        road.AddComponent<Conveyer>();
+        road.transform.parent = this.transform;
+        this.sender.GetComponent<Conveyer>().receiver = road.GetComponent<Conveyer>();
+        road.GetComponent<Conveyer>().receiver = this.receiver.GetComponent<Conveyer>();
+        
 
-       
 
-        int size = Mathf.RoundToInt(Vector3.Distance(pos1, pos2)/ frequencyRoad);
+        int size = Mathf.RoundToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
+        if (size <= 0) return;
         float lerpValue = 0;
         float distance = 1;
         distance = 1f / size;
@@ -132,10 +156,10 @@ public class Builder : MonoBehaviour {
         { 
             lerpValue += distance;
            
-            Vector3 instantiatePosition = Vector3.Lerp(pos1, pos2, lerpValue);
-            roadPieces[i] = Instantiate(objects[2], instantiatePosition, transform.rotation, road.transform);
-            p1 = new Vector3(0, 0, 0);
-            p2 = new Vector3(0, 0, 0);
+            Vector3 instantiatePosition = Vector3.Lerp(pos1.transform.position, pos2.transform.position, lerpValue);
+            roadPieces[i] = Instantiate(BuildPieces[2], instantiatePosition, transform.rotation, road.transform);
+            sender = null;
+            receiver = null;
             roadBuild = false;
             
         }

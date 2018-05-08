@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Collector : MonoBehaviour {
+    float resource;
+    public Deposit deposit;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    private void Update()
+    {
+        this.resource += deposit.resource;
+        deposit.resource = 0;
+        this.GetComponent<Conveyer>().resource += this.resource;
+        this.resource = 0;
+    }
+
 }
