@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Deposit : MonoBehaviour {
     public float generationPercentage = 1f;
-    float generationRate = 1;
+    float generationRate = .3f;
     public float resource;
+    private void Start()
+    {
+        this.name = "Deposit";
+    }
 
     void Update () {
-        generationRate = Mathf.RoundToInt(generationRate * generationPercentage);
-
-        resource += generationRate;
-	}
+        resource += generationRate * generationPercentage;
+        resource = Mathf.CeilToInt(resource);
+    }
 }

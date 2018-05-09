@@ -6,15 +6,21 @@ public class Builder : MonoBehaviour {
 
     public GameObject[] BuildPieces;
     public float frequencyRoad;
-    //public for testing
-    public bool factoryBuild;
-    public bool collectorBuild;
-    public bool roadBuild;
+
+    public Economy economy;
+
+    bool factoryBuild;
+    bool collectorBuild;
+    bool roadBuild;
 
     GameObject sender;
     GameObject receiver;
     GameObject hitObject;
 
+    private void Start()
+    {
+        economy = this.GetComponent<Economy>();
+    }
 
     private void Update()
     {
@@ -57,6 +63,8 @@ public class Builder : MonoBehaviour {
             }
             else
             {
+                receiver = null;
+                receiver = null;
                 roadBuild = false;
             }
         }
@@ -79,7 +87,7 @@ public class Builder : MonoBehaviour {
             if(Input.GetMouseButtonDown(0) && sender == null)
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0,0,-1));
-                if (hit.transform == null) return;
+                if (hit.transform == null || hit.transform.name == "City") return;
                 if (hit.transform.CompareTag("conveyer"))
                 {
                     hitObject = hit.transform.gameObject;
@@ -122,6 +130,8 @@ public class Builder : MonoBehaviour {
                 GameObject g = Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
                 g.GetComponent<Collector>().deposit = hit.transform.gameObject.GetComponent<Deposit>();
                 collectorBuild = false;
+                economy.collector(1);
+                economy.buildCosts += 10;
             }
         }
         else
@@ -130,12 +140,15 @@ public class Builder : MonoBehaviour {
             buildPos.z = 1;
             Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
             factoryBuild = false;
+            economy.factory(1);
+            economy.buildCosts += 15;
         }
     }
 
     void buildRoad(GameObject pos1,GameObject pos2)
     {
         if (pos1 == null || pos2 == null) return;
+
         GameObject road = new GameObject();
         road.name = "road";
         road.AddComponent<Road>();
@@ -163,6 +176,8 @@ public class Builder : MonoBehaviour {
             roadBuild = false;
             
         }
+        economy.road(size);
+        economy.buildCosts += 2 * size;
         road.GetComponent<Road>().init(roadPieces);
     }
 }

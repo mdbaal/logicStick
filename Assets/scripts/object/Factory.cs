@@ -4,5 +4,23 @@ using UnityEngine;
 
 public class Factory : MonoBehaviour {
 
-	
+    Conveyer conveyer;
+    float timer = 2f;
+
+    private void Start()
+    {
+        conveyer = this.GetComponent<Conveyer>();
+        this.name = "Factory";
+    }
+
+    private void Update()
+    {
+        timer -= Time.deltaTime;
+        if (timer <= 0)
+        {
+            conveyer.resource = conveyer.resource * 2f;
+            timer = 2f;
+        }
+    }
+
 }

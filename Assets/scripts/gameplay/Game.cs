@@ -21,8 +21,7 @@ public class Game : MonoBehaviour {
         depositAmount = Mathf.RoundToInt(size / 3);
         cities = new GameObject[cityAmount];
         deposits = new GameObject[depositAmount];
-        //economy.city(citiesSize);
-        //economy = this.gameObject.AddComponent<Economy>();
+        economy = this.GetComponent<Economy>();
 
         Vector3 spawnPos;
         //spawn cities

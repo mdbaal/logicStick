@@ -5,7 +5,10 @@ using UnityEngine;
 public class Collector : MonoBehaviour {
     float resource;
     public Deposit deposit;
-
+    private void Start()
+    {
+        this.name = "Collector";
+    }
 
     private void Update()
     {
