@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class UI : MonoBehaviour {
@@ -9,16 +10,20 @@ public class UI : MonoBehaviour {
 
     private void Start()
     {
-        controls.text = " Camera: \n w = up\n s = down \n a = left\n d = right\n mouseWheel = zoom\n\n Building: \n c = collector\n f = factory\n r = road\n \n p = pause";
+        if(controls != null) controls.text = " Camera: \n W = up\n S = down \n A = left\n D = right\n mouseWheel = zoom\n\n Building: \n C = collector\n F = factory\n R = road\n \n P = pause";
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && pause != null)
         {
             pause.gameObject.SetActive(true);
             Time.timeScale = 0;
         }
+    }
+    public void play()
+    {
+        SceneManager.LoadSceneAsync("Prototype", LoadSceneMode.Single);
     }
 
     public void resume()
@@ -28,7 +33,14 @@ public class UI : MonoBehaviour {
     }
     public void stop()
     {
-        Application.Quit();
+        if (SceneManager.GetActiveScene().name == "Prototype")
+        {
+            SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
+        }
+        else
+        {
+            Application.Quit();
+        }
     }
 
 }
