@@ -6,6 +6,7 @@ public class City : MonoBehaviour {
 
     Conveyer conveyer;
     public float resource;
+    public int profit;
 
     private void Start()
     {

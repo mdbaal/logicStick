@@ -13,6 +13,10 @@ public class Builder : MonoBehaviour {
     bool collectorBuild;
     bool roadBuild;
 
+    public int factoryCost;
+    public int collectorCost;
+    public int roadCost;
+
     GameObject sender;
     GameObject receiver;
     GameObject hitObject;
@@ -121,6 +125,8 @@ public class Builder : MonoBehaviour {
 
         if (index == 1)
         {
+            if (economy.treasure - collectorCost < 0) { print("not enough money"); return;}
+            
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
             if (hit.transform == null) return;
             if (hit.transform.CompareTag("deposit"))
@@ -131,17 +137,19 @@ public class Builder : MonoBehaviour {
                 g.GetComponent<Collector>().deposit = hit.transform.gameObject.GetComponent<Deposit>();
                 collectorBuild = false;
                 economy.collector(1);
-                economy.buildCosts += 10;
+                economy.buildCosts += collectorCost;
             }
         }
         else
         {
+            if(economy.treasure - factoryCost < 0) { print("not enough money"); return; }
+
             Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             buildPos.z = 1;
             Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
             factoryBuild = false;
             economy.factory(1);
-            economy.buildCosts += 15;
+            economy.buildCosts += factoryCost;
         }
     }
 
@@ -161,6 +169,7 @@ public class Builder : MonoBehaviour {
 
         int size = Mathf.RoundToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
         if (size <= 0) return;
+        if (economy.treasure - roadCost * size < 0) { print("not enough money"); return; }
         float lerpValue = 0;
         float distance = 1;
         distance = 1f / size;

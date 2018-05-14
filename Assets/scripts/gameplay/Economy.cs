@@ -10,13 +10,23 @@ public class Economy : MonoBehaviour {
    private int collectors = 0;
    private float timer = 10f;
 
-    public float currency = Mathf.Infinity;
-    public int costs = 0;
+    public int treasure;
+    public int income = 0;
     public int buildCosts = 0;
     public int maintenance = 0;
-    public Text text;
+    public int revenue;
 
+    Game game;
 
+    public Text moneyText;
+    public Text incomeText;
+
+    private void Start()
+    {
+        game = this.GetComponent<Game>();
+        treasure = 100000000;
+        timer = 10f;
+    }
 
     //
     public void road(int _roads)
@@ -45,21 +55,25 @@ public class Economy : MonoBehaviour {
     {
         return collectors;
     }
-   
 
     private void Update()
     {
         
-
+        maintenance = roads * 2 + factories * 2 + collectors * 2;
+       
+       
         timer -= Time.deltaTime;
+
         if(timer <= 0)
         {
-            maintenance = roads * 2 + factories * 2 + collectors * 2;
-            costs = maintenance + buildCosts;
-            currency -= costs;
+            game.updateEconomy();
+            income = -maintenance + -buildCosts + revenue;
+            treasure += income;
             buildCosts = 0;
+            revenue = 0;
             timer = 10f;
         }
-        text.text = "Currency: " + currency + " Costs: " + costs;
+        moneyText.text = "treasure: " + treasure;
+        incomeText.text = "income: " + income;
     }
 }

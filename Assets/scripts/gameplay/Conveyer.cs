@@ -9,7 +9,8 @@ public class Conveyer : MonoBehaviour {
     public float transferPercentage = 1f;
 
     public Conveyer receiver;
-
+    private City recCity;
+    
 
     public void send()
     {
@@ -21,6 +22,7 @@ public class Conveyer : MonoBehaviour {
             return;
         }
         receiver.resource += (Mathf.RoundToInt(this.resource * transferPercentage));
+        if (recCity != null) recCity.profit = (Mathf.RoundToInt(this.resource * transferPercentage));
         this.resource -= this.resource * transferPercentage;
     }
 
@@ -28,6 +30,13 @@ public class Conveyer : MonoBehaviour {
 
     private void Update()
     {
+        if (recCity == null && receiver != null)
+        {
+            if (receiver.gameObject.name == "City")
+            {
+                recCity = receiver.GetComponent<City>();
+            }
+        }
         count -= Time.deltaTime;
         if(count <= 0)
         {

@@ -39,5 +39,14 @@ public class Game : MonoBehaviour {
             deposits[i] = Instantiate(deposit, spawnPos, Quaternion.identity, this.transform);
         }
     }
+   public void updateEconomy()
+    {
+        int totalProfit = 0;
+        for (int i = cityAmount-1; i > 0;i--)
+        {
+            totalProfit += cities[i].GetComponent<City>().profit;
+        }
+        economy.revenue = totalProfit;
+    }
 
 }
