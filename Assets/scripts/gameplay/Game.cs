@@ -27,14 +27,14 @@ public class Game : MonoBehaviour {
         //spawn cities
         for(int i = 0;i < cityAmount; i++)
         {
-           spawnPos = new Vector3(Random.Range(0, size), Random.Range(0, size), 1);
+           spawnPos = new Vector3(Random.Range(0, size-1), Random.Range(0, size-1), 1);
            
            cities[i] = Instantiate(city, spawnPos, Quaternion.identity, this.transform);
         }
         //spawn deposits
         for (int i = 0; i < depositAmount; i++)
         {
-            spawnPos = new Vector3(Random.Range(0, size), Random.Range(0, size), 1);
+            spawnPos = new Vector3(Random.Range(0, size-1), Random.Range(0, size-1), 1);
 
             deposits[i] = Instantiate(deposit, spawnPos, Quaternion.identity, this.transform);
         }

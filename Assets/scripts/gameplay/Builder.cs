@@ -143,13 +143,16 @@ public class Builder : MonoBehaviour {
         else
         {
             if(economy.treasure - factoryCost < 0) { print("not enough money"); return; }
-
-            Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            buildPos.z = 1;
-            Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
-            factoryBuild = false;
-            economy.factory(1);
-            economy.buildCosts += factoryCost;
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
+            if (hit.transform == null)
+            {
+                Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                buildPos.z = 1;
+                Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
+                factoryBuild = false;
+                economy.factory(1);
+                economy.buildCosts += factoryCost;
+            }
         }
     }
 
