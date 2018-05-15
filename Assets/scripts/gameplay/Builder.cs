@@ -124,7 +124,7 @@ public class Builder : MonoBehaviour {
             else if (Input.GetMouseButtonDown(0) && receiver == null)
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
-                if (hit.transform == null) return;
+                if (hit.transform == null || hit.transform.gameObject == sender) return;
                 if (hit.transform.CompareTag("conveyer"))
                 {
                     Destroy(hitObject.GetComponent<HighLight>());
@@ -243,4 +243,5 @@ public class Builder : MonoBehaviour {
         economy.buildCosts += 2 * size;
         road.GetComponent<Road>().init(roadPieces);
     }
+    
 }

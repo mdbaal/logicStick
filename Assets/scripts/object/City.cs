@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class City : MonoBehaviour {
 
-    Conveyer conveyer;
+    
     public float resource;
 
     private void Start()
     {
-        conveyer = this.GetComponent<Conveyer>();
         this.name = "City";
     }
-
-    public int getProfit()
+    public void profit(int _profit)
     {
-        int prof = Mathf.RoundToInt(resource);
-        resource = 0;
-        return prof;
+        this.GetComponentInParent<Economy>().revenue += _profit;
     }
-
 }

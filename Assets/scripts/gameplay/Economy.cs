@@ -58,11 +58,10 @@ public class Economy : MonoBehaviour {
 
     private void Update()
     {
-        
-        maintenance = roads * 2 + factories * 2 + collectors * 2;
-        game.updateEconomy();
         timer -= Time.deltaTime;
+
         income = -maintenance + -buildCosts + revenue;
+        maintenance = roads * 2 + factories * 2 + collectors * 2;
 
         if (timer <= 0)
         {
