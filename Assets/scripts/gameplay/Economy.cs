@@ -4,10 +4,10 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class Economy : MonoBehaviour {
+    private int roads = 0;
+    private int factories = 0;
+    private int collectors = 0;
 
-   private int roads = 0;
-   private int factories = 0;
-   private int collectors = 0;
    private float timer = 10f;
 
     public int treasure;
@@ -60,14 +60,12 @@ public class Economy : MonoBehaviour {
     {
         
         maintenance = roads * 2 + factories * 2 + collectors * 2;
-       
-       
+        game.updateEconomy();
         timer -= Time.deltaTime;
+        income = -maintenance + -buildCosts + revenue;
 
-        if(timer <= 0)
+        if (timer <= 0)
         {
-            game.updateEconomy();
-            income = -maintenance + -buildCosts + revenue;
             treasure += income;
             buildCosts = 0;
             revenue = 0;

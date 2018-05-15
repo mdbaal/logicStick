@@ -22,7 +22,6 @@ public class Conveyer : MonoBehaviour {
             return;
         }
         receiver.resource += (Mathf.RoundToInt(this.resource * transferPercentage));
-        if (recCity != null) recCity.profit = (Mathf.RoundToInt(this.resource * transferPercentage));
         this.resource -= this.resource * transferPercentage;
     }
 

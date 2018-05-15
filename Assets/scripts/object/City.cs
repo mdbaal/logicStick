@@ -6,7 +6,6 @@ public class City : MonoBehaviour {
 
     Conveyer conveyer;
     public float resource;
-    public int profit;
 
     private void Start()
     {
@@ -14,10 +13,11 @@ public class City : MonoBehaviour {
         this.name = "City";
     }
 
-    private void Update()
+    public int getProfit()
     {
-        this.resource += conveyer.resource;
-        conveyer.resource = 0;
+        int prof = Mathf.RoundToInt(resource);
+        resource = 0;
+        return prof;
     }
 
 }

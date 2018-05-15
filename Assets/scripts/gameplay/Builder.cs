@@ -12,6 +12,7 @@ public class Builder : MonoBehaviour {
     bool factoryBuild;
     bool collectorBuild;
     bool roadBuild;
+    bool bulldozer;
 
     public int factoryCost;
     public int collectorCost;
@@ -36,6 +37,7 @@ public class Builder : MonoBehaviour {
                 factoryBuild = true;
                 collectorBuild = false;
                 roadBuild = false;
+                bulldozer = false;
             }
             else
             {
@@ -50,6 +52,7 @@ public class Builder : MonoBehaviour {
                 factoryBuild = false;
                 collectorBuild = true;
                 roadBuild = false;
+                bulldozer = false;
             }
             else
             {
@@ -64,12 +67,28 @@ public class Builder : MonoBehaviour {
                 factoryBuild = false;
                 collectorBuild = false;
                 roadBuild = true;
+                bulldozer = false;
             }
             else
             {
                 receiver = null;
                 receiver = null;
                 roadBuild = false;
+            }
+        }
+        //bulldozer
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (!bulldozer)
+            {
+                factoryBuild = false;
+                collectorBuild = false;
+                roadBuild = false;
+                bulldozer = true;
+            }
+            else
+            {
+                bulldozer = false;
             }
         }
 
@@ -79,18 +98,20 @@ public class Builder : MonoBehaviour {
             {
                 buildBuilding(0);
             }
-        }else if (collectorBuild)
+        }
+        else if (collectorBuild)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 buildBuilding(1);
             }
-        }else if (roadBuild)
+        }
+        else if (roadBuild)
         {
-            
-            if(Input.GetMouseButtonDown(0) && sender == null)
+
+            if (Input.GetMouseButtonDown(0) && sender == null)
             {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0,0,-1));
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
                 if (hit.transform == null || hit.transform.name == "City") return;
                 if (hit.transform.CompareTag("conveyer"))
                 {
@@ -98,22 +119,51 @@ public class Builder : MonoBehaviour {
                     hitObject.AddComponent<HighLight>();
                     sender = hit.transform.gameObject;
                 }
-                
+
             }
-            else if(Input.GetMouseButtonDown(0) && receiver == null)
+            else if (Input.GetMouseButtonDown(0) && receiver == null)
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
                 if (hit.transform == null) return;
                 if (hit.transform.CompareTag("conveyer"))
                 {
                     Destroy(hitObject.GetComponent<HighLight>());
-                    receiver  = hit.transform.gameObject;
-                    
+                    receiver = hit.transform.gameObject;
+
                 }
                 buildRoad(sender, receiver);
             }
         }
+        else if (bulldozer)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
+                if (hit.transform == null) return;
+                bulldoze(hit.transform.gameObject);
+            }
+        }
+    }
 
+    void bulldoze(GameObject g)
+    {
+        if (g.name == "City" || g.name == "Deposit") return;
+        if(g.name == "RoadPiece")
+        {
+            g.transform.parent.GetComponent<Road>().removeRoad();
+            economy.road(-g.transform.parent.GetComponent<Road>().roadPieces.Length-1);
+        }else if(g.name == "Factory")
+        {
+            g.GetComponent<Conveyer>().receiver = null;
+            Destroy(g.gameObject);
+            economy.factory(-1);
+        }else if(g.name == "Collector")
+        {
+            g.GetComponent<Conveyer>().receiver = null;
+            Destroy(g.gameObject);
+            economy.collector(-1);
+        }
+        bulldozer = false;
     }
     void buildBuilding(int index)
     {
@@ -183,6 +233,7 @@ public class Builder : MonoBehaviour {
            
             Vector3 instantiatePosition = Vector3.Lerp(pos1.transform.position, pos2.transform.position, lerpValue);
             roadPieces[i] = Instantiate(BuildPieces[2], instantiatePosition, transform.rotation, road.transform);
+            roadPieces[i].name = "RoadPiece";
             sender = null;
             receiver = null;
             roadBuild = false;

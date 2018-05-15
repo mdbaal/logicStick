@@ -44,9 +44,9 @@ public class Game : MonoBehaviour {
         int totalProfit = 0;
         for (int i = cityAmount-1; i > 0;i--)
         {
-            totalProfit += cities[i].GetComponent<City>().profit;
+            totalProfit += cities[i].GetComponent<City>().getProfit();
         }
-        economy.revenue = totalProfit;
+        economy.revenue += totalProfit;
     }
 
 }

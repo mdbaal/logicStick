@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Road : MonoBehaviour {
 
-    GameObject[] roadPieces;
+    public GameObject[] roadPieces;
     public float animationSpeed = 0;
     int index = 0;
 
@@ -39,5 +39,14 @@ public class Road : MonoBehaviour {
             animationSpeed = .2f;
         }
         animationSpeed -= Time.deltaTime;
+    }
+    public void removeRoad()
+    {
+        for(int i = roadPieces.Length-1;i > 0; i--)
+        {
+            Destroy(roadPieces[i]);
+        }
+        this.GetComponent<Conveyer>().receiver = null;
+        Destroy(this.gameObject);
     }
 }
