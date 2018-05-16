@@ -10,7 +10,7 @@ public class UI : MonoBehaviour {
 
     private void Start()
     {
-        if(controls != null) controls.text = " Camera: \n W = up\n S = down \n A = left\n D = right\n mouseWheel = zoom\n\n Building: \n C = collector\n F = factory\n R = road\n \n P = pause";
+        if(controls != null) controls.text = " Camera: \n W = up\n S = down \n A = left\n D = right\n mouseWheel = zoom\n\n Building: \n C = collector\n F = factory\n R = road\n \n P = pause\n B = bulldoze";
     }
 
     private void Update()
