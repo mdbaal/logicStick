@@ -5,18 +5,18 @@ using UnityEngine;
 public class Road : MonoBehaviour {
 
     public GameObject[] roadPieces;
-    public float animationSpeed = 0;
+    public float animationSpeed = .5f;
     int index = 0;
-
+    //
     public void init(GameObject[] road)
     {
         roadPieces = road;
-        animationSpeed = .5f;
         this.gameObject.GetComponent<Conveyer>().length = this.roadPieces.Length;
     }
 
     void animate()
     {
+        //animate movement on the road
         if (index != 0)
         {
             roadPieces[index - 1].transform.localScale = new Vector3(1f, 1f, 1);

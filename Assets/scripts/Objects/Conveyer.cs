@@ -11,7 +11,7 @@ public class Conveyer : MonoBehaviour {
     public Conveyer receiver;
     private City recCity;
     
-
+    //send resources to receiver
     public void send()
     {
         if (receiver == null) return;
@@ -21,6 +21,7 @@ public class Conveyer : MonoBehaviour {
             resource = 0;
             return;
         }
+        //transfer resources to the receiver, if its a city, calulate profit
         receiver.resource += (Mathf.RoundToInt(this.resource * transferPercentage));
         if (recCity != null) recCity.profit((Mathf.RoundToInt(this.resource * transferPercentage)));
         this.resource -= this.resource * transferPercentage;
@@ -30,6 +31,7 @@ public class Conveyer : MonoBehaviour {
 
     private void Update()
     {
+        //if recCity isn't known yet, get it
         if (recCity == null && receiver != null)
         {
             if (receiver.gameObject.name == "City")

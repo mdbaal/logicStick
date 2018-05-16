@@ -10,6 +10,11 @@ public class CameraControl : MonoBehaviour {
         cam = Camera.main;
     }
     void Update () {
+        moveCamera();
+    }
+    //move the camera and check the restrictions after and correct if needed
+    void moveCamera()
+    {
         //left/right
         if (Input.GetAxis("Horizontal") < 0)
         {
@@ -22,29 +27,34 @@ public class CameraControl : MonoBehaviour {
         //up/down
         if (Input.GetAxis("Vertical") < 0)
         {
-            cam.transform.Translate(new Vector3(0, -5f * Time.deltaTime,0));
+            cam.transform.Translate(new Vector3(0, -5f * Time.deltaTime, 0));
         }
         else if (Input.GetAxis("Vertical") > 0)
         {
-            cam.transform.Translate(new Vector3(0, 5f * Time.deltaTime,0));
+            cam.transform.Translate(new Vector3(0, 5f * Time.deltaTime, 0));
         }
         //zoom
-        if (Input.GetAxis("Mouse ScrollWheel") != 0f) 
+        if (Input.GetAxis("Mouse ScrollWheel") != 0f)
         {
             cam.orthographicSize += -Input.GetAxis("Mouse ScrollWheel");
         }
+        checkRestrictions();
+    }
+    void checkRestrictions()
+    {
         //restrictions
         if (cam.orthographicSize < 2f)
         {
             cam.orthographicSize = 2f;
-        }else if (cam.orthographicSize > 5f)
+        }
+        else if (cam.orthographicSize > 5f)
         {
             cam.orthographicSize = 5f;
         }
         //left
-        if(cam.transform.position.x < 0)
+        if (cam.transform.position.x < 0)
         {
-            cam.transform.position = new Vector2(0,transform.position.y);
+            cam.transform.position = new Vector2(0, transform.position.y);
         }
         //right
         if (cam.transform.position.x > game.size)
@@ -54,12 +64,12 @@ public class CameraControl : MonoBehaviour {
         //up
         if (cam.transform.position.y < 0)
         {
-            cam.transform.position = new Vector2(transform.position.x,0);
+            cam.transform.position = new Vector2(transform.position.x, 0);
         }
         //down
         if (cam.transform.position.y > game.size)
         {
-            cam.transform.position = new Vector2(transform.position.x,game.size);
+            cam.transform.position = new Vector2(transform.position.x, game.size);
         }
     }
 }

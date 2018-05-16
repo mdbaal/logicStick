@@ -15,6 +15,7 @@ public class UI : MonoBehaviour {
 
     private void Update()
     {
+        //check if the game needs to be paused
         if (Input.GetKeyDown(KeyCode.P) && pause != null)
         {
             pause.gameObject.SetActive(true);
@@ -23,16 +24,19 @@ public class UI : MonoBehaviour {
     }
     public void play()
     {
+        //start a new game
         SceneManager.LoadSceneAsync("Prototype", LoadSceneMode.Single);
     }
 
     public void resume()
     {
+        //resume from the pause menu
         pause.gameObject.SetActive(false);
         Time.timeScale = 1;
     }
     public void stop()
     {
+        //if in main menu, stop the application, if in pause menu, go back to main menu
         if (SceneManager.GetActiveScene().name == "Prototype")
         {
             SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);

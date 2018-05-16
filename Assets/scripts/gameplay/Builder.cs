@@ -29,6 +29,12 @@ public class Builder : MonoBehaviour {
 
     private void Update()
     {
+        checkBuildMode();
+        checkBuildClick();
+    }
+    //check if anything from construction menu is selected
+    bool checkBuildMode()
+    {
         //factoryBuild
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -38,10 +44,12 @@ public class Builder : MonoBehaviour {
                 collectorBuild = false;
                 roadBuild = false;
                 bulldozer = false;
+                return true;
             }
             else
             {
                 factoryBuild = false;
+                return false;
             }
         }
         //Collector
@@ -53,10 +61,12 @@ public class Builder : MonoBehaviour {
                 collectorBuild = true;
                 roadBuild = false;
                 bulldozer = false;
+                return true;
             }
             else
             {
                 collectorBuild = false;
+                return false;
             }
         }
         //roadBuild
@@ -68,12 +78,14 @@ public class Builder : MonoBehaviour {
                 collectorBuild = false;
                 roadBuild = true;
                 bulldozer = false;
+                return true;
             }
             else
             {
                 receiver = null;
                 receiver = null;
                 roadBuild = false;
+                return false;
             }
         }
         //bulldozer
@@ -85,30 +97,37 @@ public class Builder : MonoBehaviour {
                 collectorBuild = false;
                 roadBuild = false;
                 bulldozer = true;
+                return true;
             }
             else
             {
                 bulldozer = false;
+                return false;
             }
         }
-
+        return false;
+    }
+    //if checkBuildMode returns true, check if anything is being build
+    void checkBuildClick()
+    {
+        //if factory is selected
         if (factoryBuild)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 buildBuilding(0);
             }
-        }
+        }//if collector is selected
         else if (collectorBuild)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 buildBuilding(1);
             }
-        }
+        }//if road is selected
         else if (roadBuild)
         {
-
+            //first select point
             if (Input.GetMouseButtonDown(0) && sender == null)
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
@@ -120,7 +139,7 @@ public class Builder : MonoBehaviour {
                     sender = hit.transform.gameObject;
                 }
 
-            }
+            }//second select point
             else if (Input.GetMouseButtonDown(0) && receiver == null)
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, -1));
@@ -133,7 +152,7 @@ public class Builder : MonoBehaviour {
                 }
                 buildRoad(sender, receiver);
             }
-        }
+        }//if bulldozer is selected
         else if (bulldozer)
         {
             if (Input.GetMouseButtonDown(0))
@@ -145,26 +164,31 @@ public class Builder : MonoBehaviour {
         }
     }
 
+    //bulldozer remove function
     void bulldoze(GameObject g)
     {
+        //cannot remove cities and deposits
         if (g.name == "City" || g.name == "Deposit") return;
+        //if its a road,call the remove function of the road
         if(g.name == "RoadPiece")
         {
             g.transform.parent.GetComponent<Road>().removeRoad();
             economy.road(-g.transform.parent.GetComponent<Road>().roadPieces.Length-1);
-        }else if(g.name == "Factory")
+        }else if(g.name == "Factory") // if it's a factory, remove it and set the receiver to null
         {
             g.GetComponent<Conveyer>().receiver = null;
             Destroy(g.gameObject);
             economy.factory(-1);
-        }else if(g.name == "Collector")
+        }else if(g.name == "Collector")//if it's a collector remove it and set the receiver to null
         {
             g.GetComponent<Conveyer>().receiver = null;
             Destroy(g.gameObject);
             economy.collector(-1);
         }
+        //at end set bulldozer to false
         bulldozer = false;
     }
+    //build factory or collector
     void buildBuilding(int index)
     {
         //0 or 1 || 0 = factory, 1 = collector
@@ -172,13 +196,14 @@ public class Builder : MonoBehaviour {
         {
             return;
         }
-
+        //if its 1 build collector
         if (index == 1)
         {
             if (economy.treasure - collectorCost < 0) { print("not enough money"); return;}
             
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
             if (hit.transform == null) return;
+            //check if the hit is a deposit
             if (hit.transform.CompareTag("deposit"))
             {
                 Vector3 buildPos = hit.transform.position;
@@ -190,11 +215,11 @@ public class Builder : MonoBehaviour {
                 economy.buildCosts += collectorCost;
             }
         }
-        else
+        else //else it is a factory
         {
             if(economy.treasure - factoryCost < 0) { print("not enough money"); return; }
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
-            if (hit.transform == null)
+            if (hit.transform == null)//can only be placed on empty spots
             {
                 Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 buildPos.z = 1;
@@ -205,11 +230,12 @@ public class Builder : MonoBehaviour {
             }
         }
     }
-
+    //build a road between two points
     void buildRoad(GameObject pos1,GameObject pos2)
     {
+        //if one of the points is null stop
         if (pos1 == null || pos2 == null) return;
-
+        //create parent road object where all roadpieces will be children of
         GameObject road = new GameObject();
         road.name = "road";
         road.AddComponent<Road>();
@@ -219,7 +245,7 @@ public class Builder : MonoBehaviour {
         road.GetComponent<Conveyer>().receiver = this.receiver.GetComponent<Conveyer>();
         
 
-
+        //calculate the size and cost of the road
         int size = Mathf.RoundToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
         if (size <= 0) return;
         if (economy.treasure - roadCost * size < 0) { print("not enough money"); return; }
@@ -227,6 +253,7 @@ public class Builder : MonoBehaviour {
         float distance = 1;
         distance = 1f / size;
         GameObject[] roadPieces = new GameObject[size-1];
+        //create the road
         for (int i = 0; i < size-1; i++)
         { 
             lerpValue += distance;

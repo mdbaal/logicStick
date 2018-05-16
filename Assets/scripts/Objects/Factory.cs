@@ -15,6 +15,7 @@ public class Factory : MonoBehaviour {
 
     private void Update()
     {
+        //every 2 secconds double resources
         timer -= Time.deltaTime;
         if (timer <= 0)
         {

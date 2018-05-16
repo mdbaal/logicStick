@@ -24,7 +24,7 @@ public class Economy : MonoBehaviour {
     private void Start()
     {
         game = this.GetComponent<Game>();
-        treasure = 100000000;
+        treasure = 1000;
         timer = 10f;
     }
 
@@ -59,10 +59,10 @@ public class Economy : MonoBehaviour {
     private void Update()
     {
         timer -= Time.deltaTime;
-
-        income = -maintenance + -buildCosts + revenue;
+        //calculate the maintenance and income
         maintenance = roads * 2 + factories * 2 + collectors * 2;
-
+        income = -maintenance + -buildCosts + revenue;
+        //when timer is done, calculate new treasury
         if (timer <= 0)
         {
             treasure += income;
