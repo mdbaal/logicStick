@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour {
     private Camera cam;
     public Game game;
+    public bool restricted = true;
     private void Start()
     {
         cam = Camera.main;
@@ -42,6 +43,7 @@ public class CameraControl : MonoBehaviour {
     }
     void checkRestrictions()
     {
+        if (!restricted) return;
         //restrictions
         if (cam.orthographicSize < 2f)
         {
