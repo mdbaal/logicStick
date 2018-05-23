@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Collector : MonoBehaviour {
-    float resource;
+    private float resource;
     public Deposit deposit;
-    Conveyer conveyer;
+    private Conveyer conveyer;
     private void Start()
     {
         this.name = "Collector";

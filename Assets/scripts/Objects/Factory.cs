@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Factory : MonoBehaviour {
 
-    Conveyer conveyer;
-    float timer = 2f;
+    private Conveyer conveyer;
+    private float timer = 2f;
 
     private void Start()
     {

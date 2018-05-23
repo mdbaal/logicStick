@@ -5,17 +5,26 @@ using UnityEngine;
 public class Road : MonoBehaviour {
 
     public GameObject[] roadPieces;
-    public float animationSpeed = .5f;
-    int index = 0;
+    private float animationSpeed = 0;
+    private int index = 0;
     //
     public void init(GameObject[] road)
     {
         roadPieces = road;
         this.gameObject.GetComponent<Conveyer>().length = this.roadPieces.Length;
+        
     }
 
-    void animate()
+    private void animate()
     {
+        if(this.roadPieces.Length / .5f > 0)
+        {
+            animationSpeed = this.roadPieces.Length / .2f;
+        }
+        else
+        {
+            animationSpeed = .5f;
+        }
         //animate movement on the road
         if (index != 0)
         {
@@ -30,7 +39,7 @@ public class Road : MonoBehaviour {
         index++;
     }
 
-	void Update () {
+    private void Update () {
         
         if (animationSpeed < 0)
         { 

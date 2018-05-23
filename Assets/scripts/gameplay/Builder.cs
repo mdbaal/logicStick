@@ -9,18 +9,18 @@ public class Builder : MonoBehaviour {
 
     public Economy economy;
 
-    bool factoryBuild;
-    bool collectorBuild;
-    bool roadBuild;
-    bool bulldozer;
+    private bool factoryBuild;
+    private bool collectorBuild;
+    private bool roadBuild;
+    private bool bulldozer;
 
     public int factoryCost;
     public int collectorCost;
     public int roadCost;
 
-    GameObject sender;
-    GameObject receiver;
-    GameObject hitObject;
+    private GameObject sender;
+    private GameObject receiver;
+    private GameObject hitObject;
 
     private void Start()
     {
@@ -33,7 +33,7 @@ public class Builder : MonoBehaviour {
         checkBuildClick();
     }
     //check if anything from construction menu is selected
-    bool checkBuildMode()
+    private bool checkBuildMode()
     {
         //factoryBuild
         if (Input.GetKeyDown(KeyCode.F))
@@ -165,7 +165,7 @@ public class Builder : MonoBehaviour {
     }
 
     //bulldozer remove function
-    void bulldoze(GameObject g)
+    private void bulldoze(GameObject g)
     {
         //cannot remove cities and deposits
         if (g.name == "City" || g.name == "Deposit") return;
@@ -189,7 +189,7 @@ public class Builder : MonoBehaviour {
         bulldozer = false;
     }
     //build factory or collector
-    void buildBuilding(int index)
+    private void buildBuilding(int index)
     {
         //0 or 1 || 0 = factory, 1 = collector
         if(index != 0 && index != 1)
@@ -199,7 +199,7 @@ public class Builder : MonoBehaviour {
         //if its 1 build collector
         if (index == 1)
         {
-            if (economy.treasure - collectorCost < 0) { print("not enough money"); return;}
+            if (economy.treasure() - collectorCost < 0) { print("not enough money"); return;}
             
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
             if (hit.transform == null) return;
@@ -212,12 +212,12 @@ public class Builder : MonoBehaviour {
                 g.GetComponent<Collector>().deposit = hit.transform.gameObject.GetComponent<Deposit>();
                 collectorBuild = false;
                 economy.collector(1);
-                economy.buildCosts += collectorCost;
+                economy.buildCosts(collectorCost);
             }
         }
         else //else it is a factory
         {
-            if(economy.treasure - factoryCost < 0) { print("not enough money"); return; }
+            if(economy.treasure() - factoryCost < 0) { print("not enough money"); return; }
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
             if (hit.transform == null)//can only be placed on empty spots
             {
@@ -226,12 +226,12 @@ public class Builder : MonoBehaviour {
                 Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
                 factoryBuild = false;
                 economy.factory(1);
-                economy.buildCosts += factoryCost;
+                economy.buildCosts(factoryCost);
             }
         }
     }
     //build a road between two points
-    void buildRoad(GameObject pos1,GameObject pos2)
+    private void buildRoad(GameObject pos1,GameObject pos2)
     {
         //if one of the points is null stop
         if (pos1 == null || pos2 == null) return;
@@ -248,7 +248,7 @@ public class Builder : MonoBehaviour {
         //calculate the size and cost of the road
         int size = Mathf.RoundToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
         if (size <= 0) return;
-        if (economy.treasure - roadCost * size < 0) { print("not enough money"); return; }
+        if (economy.treasure() - roadCost * size < 0) { print("not enough money"); return; }
         float lerpValue = 0;
         float distance = 1;
         distance = 1f / size;
@@ -267,7 +267,7 @@ public class Builder : MonoBehaviour {
             
         }
         economy.road(size);
-        economy.buildCosts += 2 * size;
+        economy.buildCosts(2 * size);
         road.GetComponent<Road>().init(roadPieces);
     }
     

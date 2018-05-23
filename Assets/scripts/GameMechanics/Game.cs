@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Game : MonoBehaviour {
-    public int size;
-    int cityAmount;
-    int depositAmount;
+    [SerializeField]
+    private int size;
+    private int cityAmount;
+    private int depositAmount;
 
     public GameObject city;
     public GameObject deposit;
 
-    Economy economy;
+    private Economy economy;
 
-    public GameObject[] cities;
-    public GameObject[] deposits; 
+    private GameObject[] cities;
+    private GameObject[] deposits;
 
-    void Start () {
+    private void Start () {
         //if the world size is lower then 10 do nothing
         if (size < 10) return;
         //get the amount of things to generate
@@ -40,6 +41,11 @@ public class Game : MonoBehaviour {
 
             deposits[i] = Instantiate(deposit, spawnPos, Quaternion.identity, this.transform);
         }
+    }
+
+    public int getSize()
+    {
+        return this.size;
     }
    
 

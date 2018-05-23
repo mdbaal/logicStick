@@ -20,7 +20,7 @@ public class DebugConsole : MonoBehaviour {
         cam = Camera.main;
     }
 
-    void initConsole()
+    private void initConsole()
     {
         if (initialized)
         {
@@ -30,13 +30,13 @@ public class DebugConsole : MonoBehaviour {
         initialized = true;
 
     }
-    void deInitCosole()
+    private void deInitCosole()
     {
         initialized = false;
         input = null;
 
     }
-    void getConsoleInput()
+    private void getConsoleInput()
     {
         if (Input.GetKeyDown(KeyCode.F1)) initConsole();
         if (Input.GetKeyDown(KeyCode.Backspace)) input = null;
@@ -57,7 +57,7 @@ public class DebugConsole : MonoBehaviour {
             }
         }   
     }
-    void handleCommand(string _input)
+    private void handleCommand(string _input)
     {
         switch (_input)
         {
@@ -71,7 +71,7 @@ public class DebugConsole : MonoBehaviour {
                 return;
             case "onebillion":
                 print("billionare");
-                economy.treasure = 1000000000;
+                economy.treasure(1000000000);
                 return;
             case "highvalue":
                 print("market rise");

@@ -14,6 +14,6 @@ public class City : MonoBehaviour {
     //add profit made to the revenue
     public void profit(int _profit)
     {
-        this.GetComponentInParent<Economy>().revenue += _profit;
+        this.GetComponentInParent<Economy>().revenue(_profit);
     }
 }

@@ -10,11 +10,11 @@ public class CameraControl : MonoBehaviour {
     {
         cam = Camera.main;
     }
-    void Update () {
+    private void Update () {
         moveCamera();
     }
     //move the camera and check the restrictions after and correct if needed
-    void moveCamera()
+    private void moveCamera()
     {
         //left/right
         if (Input.GetAxis("Horizontal") < 0)
@@ -41,7 +41,7 @@ public class CameraControl : MonoBehaviour {
         }
         checkRestrictions();
     }
-    void checkRestrictions()
+    private void checkRestrictions()
     {
         if (!restricted) return;
         //restrictions
@@ -59,9 +59,9 @@ public class CameraControl : MonoBehaviour {
             cam.transform.position = new Vector2(0, transform.position.y);
         }
         //right
-        if (cam.transform.position.x > game.size)
+        if (cam.transform.position.x > game.getSize())
         {
-            cam.transform.position = new Vector2(game.size, transform.position.y);
+            cam.transform.position = new Vector2(game.getSize(), transform.position.y);
         }
         //up
         if (cam.transform.position.y < 0)
@@ -69,9 +69,9 @@ public class CameraControl : MonoBehaviour {
             cam.transform.position = new Vector2(transform.position.x, 0);
         }
         //down
-        if (cam.transform.position.y > game.size)
+        if (cam.transform.position.y > game.getSize())
         {
-            cam.transform.position = new Vector2(transform.position.x, game.size);
+            cam.transform.position = new Vector2(transform.position.x, game.getSize());
         }
     }
 }

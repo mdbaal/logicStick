@@ -10,13 +10,13 @@ public class Economy : MonoBehaviour {
 
    private float timer = 10f;
 
-    public int treasure;
-    public int income = 0;
-    public int buildCosts = 0;
-    public int maintenance = 0;
-    public int revenue;
+    private int _treasure;
+    private int _income = 0;
+    private int _buildCosts = 0;
+    private int _maintenance = 0;
+    private int _revenue;
 
-    Game game;
+    private Game game;
 
     public Text moneyText;
     public Text incomeText;
@@ -24,7 +24,7 @@ public class Economy : MonoBehaviour {
     private void Start()
     {
         game = this.GetComponent<Game>();
-        treasure = 1000;
+        _treasure = 1000;
         timer = 10f;
     }
 
@@ -51,26 +51,55 @@ public class Economy : MonoBehaviour {
     {
         collectors += _collectors;
     }
+    //
     public int collector()
     {
         return collectors;
     }
+    //
+    public int treasure()
+    {
+        return _treasure;
+    }
+    public void treasure(int value)
+    {
+         _treasure += value;
+    }
+    //
+    public int buildCosts()
+    {
+        return _buildCosts;
+    }
+    public void buildCosts(int value)
+    {
+        _buildCosts += value;
+    }
+    //
+    public int revenue()
+    {
+        return _revenue;
+    }
+    public void revenue(int value)
+    {
+        _revenue += value;
+    }
+
 
     private void Update()
     {
         timer -= Time.deltaTime;
         //calculate the maintenance and income
-        maintenance = roads * 2 + factories * 2 + collectors * 2;
-        income = -maintenance + -buildCosts + revenue;
+        _maintenance = roads * 2 + factories * 2 + collectors * 2;
+        _income = -_maintenance + -_buildCosts + _revenue;
         //when timer is done, calculate new treasury
         if (timer <= 0)
         {
-            treasure += income;
-            buildCosts = 0;
-            revenue = 0;
+            _treasure += _income;
+            _buildCosts = 0;
+            _revenue = 0;
             timer = 10f;
         }
-        moneyText.text = "treasure: " + treasure;
-        incomeText.text = "income: " + income;
+        moneyText.text = "treasure: " + _treasure;
+        incomeText.text = "income: " + _income;
     }
 }
