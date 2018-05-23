@@ -5,7 +5,8 @@ using UnityEngine;
 public class Road : MonoBehaviour {
 
     public GameObject[] roadPieces;
-    private float animationSpeed = 0;
+    [SerializeField]
+    private float animationSpeed = .2f;
     private int index = 0;
     //
     public void init(GameObject[] road)
@@ -17,14 +18,7 @@ public class Road : MonoBehaviour {
 
     private void animate()
     {
-        if(this.roadPieces.Length / .5f > 0)
-        {
-            animationSpeed = this.roadPieces.Length / .2f;
-        }
-        else
-        {
-            animationSpeed = .5f;
-        }
+        
         //animate movement on the road
         if (index != 0)
         {
@@ -45,7 +39,15 @@ public class Road : MonoBehaviour {
         { 
             animate();
             this.GetComponent<Conveyer>().send();
-            animationSpeed = .2f;
+            if (this.roadPieces.Length * .1f > 0)
+            {
+                animationSpeed = this.roadPieces.Length *.1f;
+                if (animationSpeed > 2) animationSpeed = 2;
+            }
+            else
+            {
+                animationSpeed = .5f;
+            }
         }
         animationSpeed -= Time.deltaTime;
     }

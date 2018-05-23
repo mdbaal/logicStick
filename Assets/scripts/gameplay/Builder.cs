@@ -229,6 +229,11 @@ public class Builder : MonoBehaviour {
                 economy.buildCosts(factoryCost);
             }
         }
+        factoryBuild = false;
+        collectorBuild = false;
+        roadBuild = false;
+        bulldozer = false;
+
     }
     //build a road between two points
     private void buildRoad(GameObject pos1,GameObject pos2)
@@ -269,6 +274,10 @@ public class Builder : MonoBehaviour {
         economy.road(size);
         economy.buildCosts(2 * size);
         road.GetComponent<Road>().init(roadPieces);
+        factoryBuild = false;
+        collectorBuild = false;
+        roadBuild = false;
+        bulldozer = false;
     }
     
 }
