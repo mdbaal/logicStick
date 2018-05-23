@@ -8,11 +8,16 @@ public class Builder : MonoBehaviour {
     public float frequencyRoad;
 
     public Economy economy;
-
+    [SerializeField]
     private bool factoryBuild;
+    [SerializeField]
     private bool collectorBuild;
+    [SerializeField]
     private bool roadBuild;
+    [SerializeField]
     private bool bulldozer;
+    [SerializeField]
+    private bool shiftBuild;
 
     public int factoryCost;
     public int collectorCost;
@@ -35,6 +40,11 @@ public class Builder : MonoBehaviour {
     //check if anything from construction menu is selected
     private bool checkBuildMode()
     {
+        if (Input.GetKeyDown(KeyCode.LeftShift)){
+            if(!shiftBuild) shiftBuild = true; else shiftBuild = false;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift)) shiftBuild = false;
+        
         //factoryBuild
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -210,7 +220,6 @@ public class Builder : MonoBehaviour {
                 buildPos.z = 1;
                 GameObject g = Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
                 g.GetComponent<Collector>().deposit = hit.transform.gameObject.GetComponent<Deposit>();
-                collectorBuild = false;
                 economy.collector(1);
                 economy.buildCosts(collectorCost);
             }
@@ -224,15 +233,26 @@ public class Builder : MonoBehaviour {
                 Vector3 buildPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 buildPos.z = 1;
                 Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
-                factoryBuild = false;
                 economy.factory(1);
                 economy.buildCosts(factoryCost);
             }
         }
-        factoryBuild = false;
-        collectorBuild = false;
-        roadBuild = false;
-        bulldozer = false;
+
+        if (!shiftBuild)
+        {
+            factoryBuild = false;
+            collectorBuild = false;
+            roadBuild = false;
+            bulldozer = false;
+        }
+        else if(index == 0)
+        {
+            factoryBuild = true;
+        }
+        else if(index == 1)
+        {
+            collectorBuild = true;
+        }
 
     }
     //build a road between two points
@@ -268,16 +288,21 @@ public class Builder : MonoBehaviour {
             roadPieces[i].name = "RoadPiece";
             sender = null;
             receiver = null;
-            roadBuild = false;
-            
         }
         economy.road(size);
         economy.buildCosts(2 * size);
         road.GetComponent<Road>().init(roadPieces);
-        factoryBuild = false;
-        collectorBuild = false;
-        roadBuild = false;
-        bulldozer = false;
+        if (!shiftBuild)
+        {
+            factoryBuild = false;
+            collectorBuild = false;
+            roadBuild = false;
+            bulldozer = false;
+        }
+        else
+        {
+            roadBuild = true;
+        }
     }
     
 }
