@@ -6,6 +6,7 @@ public class CameraControl : MonoBehaviour {
     private Camera cam;
     public Game game;
     public bool restricted = true;
+    public bool canMove = true;
     private void Start()
     {
         cam = Camera.main;
@@ -16,6 +17,7 @@ public class CameraControl : MonoBehaviour {
     //move the camera and check the restrictions after and correct if needed
     private void moveCamera()
     {
+        if (!canMove) return;
         //left/right
         if (Input.GetAxis("Horizontal") < 0)
         {

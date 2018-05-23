@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DebugConsole : MonoBehaviour {
     [SerializeField]
     private bool initialized = false;
-    private string[] commands = {"fcam","lcam","onebillion","highvalue","lowvalue"};
+    private string[] commands = {"fcam","lcam","onebillion","highvalue","lowvalue","1x","2x","3x"};
     [SerializeField]
     private string input = null;
 
@@ -27,11 +27,13 @@ public class DebugConsole : MonoBehaviour {
             deInitCosole();
             return;
         }
+        cam.GetComponent<CameraControl>().canMove = false;
         initialized = true;
 
     }
     private void deInitCosole()
     {
+        cam.GetComponent<CameraControl>().canMove = true;
         initialized = false;
         input = null;
 
@@ -79,6 +81,19 @@ public class DebugConsole : MonoBehaviour {
             case "lowvalue":
                 print("market drop");
                 return;
+            case "1x":
+                Time.timeScale = 1;
+                print("time scale 1");
+                return;
+            case "2x":
+                Time.timeScale = 2;
+                print("time scale 2");
+                return;
+            case "3x":
+                Time.timeScale = 3;
+                print("time scale 3");
+                return;
+
         }
     }
 
