@@ -5,7 +5,8 @@ using UnityEngine;
 public class Conveyer : MonoBehaviour {
     public int length = 1;
     public float resource = 0;
-    public float count;
+    [SerializeField]
+    private float count = 0;
     public float transferPercentage = 1f;
 
     public Conveyer receiver;
@@ -43,7 +44,7 @@ public class Conveyer : MonoBehaviour {
         if(count <= 0)
         {
             send();
-            count = 2f;
+            count = length * .1f * length;
         }
     }
 
