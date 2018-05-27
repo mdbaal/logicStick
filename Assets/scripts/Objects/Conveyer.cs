@@ -5,7 +5,6 @@ using UnityEngine;
 public class Conveyer : MonoBehaviour {
     public int length = 1;
     public float resource = 0;
-    [SerializeField]
     private float count = 0;
     public float transferPercentage = 1f;
 

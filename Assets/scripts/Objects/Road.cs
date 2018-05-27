@@ -5,7 +5,6 @@ using UnityEngine;
 public class Road : MonoBehaviour {
 
     public GameObject[] roadPieces;
-    [SerializeField]
     private float animationSpeed = .2f;
     private int index = 0;
     //

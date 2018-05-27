@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DebugConsole : MonoBehaviour {
     [SerializeField]
     private bool initialized = false;
-    private string[] commands = {"fcam","lcam","onebillion","highvalue","lowvalue","1x","2x","3x"};
+    private string[] commands = {"fcam","lcam","onebillion","nothing","highvalue","lowvalue","1x","2x","3x"};
     [SerializeField]
     private string input = null;
 
@@ -92,6 +92,10 @@ public class DebugConsole : MonoBehaviour {
             case "3x":
                 Time.timeScale = 3;
                 print("time scale 3");
+                return;
+            case "nothing":
+                economy.treasure(-economy.treasure());
+                print("nothing at all");
                 return;
 
         }
