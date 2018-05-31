@@ -25,17 +25,20 @@ public class Factory : MonoBehaviour {
 
     private void Update()
     {
+        if (resource1 != null) checkRecipe();
         //every 2 seconds double resources
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
             conveyer.resource = conveyer.resource * 2f;
             timer = 2f;
+            craftResources();
+            print(output + " amount:  " + output.amount());
         }
-        if (resource1 != null) checkRecipe();
-        craftResources();
-        print(output + " amount:  " + output.amount());
+        
+        
     }
+    //create output resource from input
     void craftResources()
     {
         if (recipe == null) return;
@@ -45,7 +48,7 @@ public class Factory : MonoBehaviour {
             checkRecipe();
             return;
         }
-
+        //craft according to the size off the recipe
         switch (recipe.size)
         {
             case 1:
@@ -70,7 +73,7 @@ public class Factory : MonoBehaviour {
         }
           
     }
-
+    //check if there is a recipe for the current input resources
     private void checkRecipe()
     {
        if(resource1.recipe().resource2 != null)

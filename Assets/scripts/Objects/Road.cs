@@ -17,7 +17,6 @@ public class Road : MonoBehaviour {
 
     private void animate()
     {
-        
         //animate movement on the road
         if (index != 0)
         {
@@ -33,7 +32,7 @@ public class Road : MonoBehaviour {
     }
 
     private void Update () {
-        
+        //animate the road and reset timer
         if (animationSpeed < 0)
         { 
             animate();
@@ -50,6 +49,7 @@ public class Road : MonoBehaviour {
         }
         animationSpeed -= Time.deltaTime;
     }
+    //remove all road pieces
     public void removeRoad()
     {
         for(int i = roadPieces.Length-1;i > 0; i--)

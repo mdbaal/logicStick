@@ -28,7 +28,7 @@ public class Economy : MonoBehaviour {
         timer = 10f;
     }
 
-    //
+    //getters/setters for all important values of the economy
     public void road(int _roads)
     {
         roads += _roads;

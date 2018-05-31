@@ -17,6 +17,7 @@ public class AudioPlayer : MonoBehaviour {
     }
     private void Update()
     {
+        //get input for next/previous and mute
         if (Input.GetKeyDown(KeyCode.PageUp)) next();
         if (Input.GetKeyDown(KeyCode.PageDown)) previous();
         if (Input.GetKeyDown(KeyCode.M)) mute = !mute;

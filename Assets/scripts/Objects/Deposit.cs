@@ -10,7 +10,7 @@ public class Deposit : MonoBehaviour {
     {
         this.name = "Deposit";
     }
-
+    //generate resources
     private void Update () {
         resource += generationRate * generationPercentage;
         resource = Mathf.CeilToInt(resource);

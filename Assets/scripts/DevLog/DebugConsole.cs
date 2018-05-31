@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DebugConsole : MonoBehaviour {
-    [SerializeField]
     private bool initialized = false;
+    //list of all commands
     private string[] commands = {"fcam","lcam","onebillion","nothing","highvalue","lowvalue","1x","2x","3x"};
-    [SerializeField]
     private string input = null;
 
     private Economy economy;
@@ -19,7 +18,7 @@ public class DebugConsole : MonoBehaviour {
         game = this.GetComponent<Game>();
         cam = Camera.main;
     }
-
+    //if not initialized initialize the console, else de initialize it
     private void initConsole()
     {
         if (initialized)
@@ -31,6 +30,7 @@ public class DebugConsole : MonoBehaviour {
         initialized = true;
 
     }
+    //de initialize console
     private void deInitCosole()
     {
         cam.GetComponent<CameraControl>().canMove = true;
@@ -38,6 +38,7 @@ public class DebugConsole : MonoBehaviour {
         input = null;
 
     }
+    //get the input from console
     private void getConsoleInput()
     {
         if (Input.GetKeyDown(KeyCode.F1)) initConsole();
@@ -59,6 +60,7 @@ public class DebugConsole : MonoBehaviour {
             }
         }   
     }
+    //handle the commands
     private void handleCommand(string _input)
     {
         switch (_input)

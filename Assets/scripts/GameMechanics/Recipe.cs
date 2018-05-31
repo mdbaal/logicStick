@@ -13,6 +13,7 @@ public class Recipe {
 
     public int size = 0;
 
+    //set recipe for resource, with input resources, output resource and a convertion ratio for the input to output
     public Recipe(Resource _resource1, Resource _resource2, Resource _resource3, Resource _ouput,float _convertRatio)
     {
         this.resource1 = _resource1;

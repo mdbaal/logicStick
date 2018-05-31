@@ -8,15 +8,11 @@ public class Builder : MonoBehaviour {
     public float frequencyRoad;
 
     public Economy economy;
-    [SerializeField]
+
     private bool factoryBuild;
-    [SerializeField]
     private bool collectorBuild;
-    [SerializeField]
     private bool roadBuild;
-    [SerializeField]
     private bool bulldozer;
-    [SerializeField]
     private bool shiftBuild;
 
     public int factoryCost;
@@ -34,12 +30,15 @@ public class Builder : MonoBehaviour {
 
     private void Update()
     {
+        //check for buildmode
         checkBuildMode();
+        //check for click
         checkBuildClick();
     }
     //check if anything from construction menu is selected
     private bool checkBuildMode()
     {
+        //check left shift mode
         if (Input.GetKeyDown(KeyCode.LeftShift)){
             if(!shiftBuild) shiftBuild = true; else shiftBuild = false;
         }
@@ -237,7 +236,7 @@ public class Builder : MonoBehaviour {
                 economy.buildCosts(factoryCost);
             }
         }
-
+        //check is still in shift mode
         if (!shiftBuild)
         {
             factoryBuild = false;
