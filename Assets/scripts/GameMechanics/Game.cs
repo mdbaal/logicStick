@@ -20,8 +20,8 @@ public class Game : MonoBehaviour {
         //if the world size is lower then 10 do nothing
         if (size < 10) return;
         //get the amount of things to generate
-        cityAmount = Mathf.RoundToInt(size / 5);
-        depositAmount = Mathf.RoundToInt(size / 3);
+        cityAmount = Mathf.FloorToInt(size / 5);
+        depositAmount = Mathf.FloorToInt(size / 3);
         cities = new GameObject[cityAmount];
         deposits = new GameObject[depositAmount];
         economy = this.GetComponent<Economy>();

@@ -4,47 +4,57 @@ using UnityEngine;
 
 public class Conveyer : MonoBehaviour {
     public int length = 1;
-    public float resource = 0;
-    private float count = 0;
     public float transferPercentage = 1f;
-
-    public Conveyer receiver;
-    private City recCity;
     
-    //send resources to receiver
+    public Resource resource;
+    
+    public Conveyer receiver;
+
+    
     public void send()
     {
-        if (receiver == null) return;
         
-        if(resource <= 0 || resource - resource * transferPercentage < 0)
-        {
-            resource = 0;
-            return;
-        }
-        //transfer resources to the receiver, if its a city, calulate profit
-        receiver.resource += (Mathf.RoundToInt(this.resource * transferPercentage));
-        if (recCity != null) recCity.profit((Mathf.RoundToInt(this.resource * transferPercentage)));
-        this.resource -= this.resource * transferPercentage;
-    }
+        float transferAmount = 0;
 
-    
+        if (receiver == null) return;
+        if (resource == null) return;
+        if (resource.amount() < 0) resource.setAmount(0);
+
+        transferAmount = this.resource.amount() * this.transferPercentage;
+
+        
+
+        if (receiver.GetComponent<City>() != null)
+        {
+            receiver.GetComponent<City>().profit(resource, transferAmount);
+            this.resource.amount(-transferAmount);
+        }
+        else if (receiver.GetComponent<Factory>() != null)
+        {
+            receiver.GetComponent<Factory>().receive(resource, transferAmount);
+            this.resource.amount(-transferAmount);
+        }else if (receiver.resource == null || receiver.resource.GetType() != this.resource.GetType()) {
+            receiver.resource = resource;
+            receiver.resource.setAmount(0);
+            receiver.resource.amount(transferAmount);
+            this.resource.amount(-transferAmount);
+        } else if (receiver.resource.GetType() == this.resource.GetType())
+        {
+            receiver.resource.amount(transferAmount);
+            this.resource.amount(-transferAmount);
+        }
+    }
 
     private void Update()
     {
-        //if recCity isn't known yet, get it
-        if (recCity == null && receiver != null)
+        if (resource != null)
         {
-            if (receiver.gameObject.name == "City")
+            if (resource.amount() > 10)
             {
-                recCity = receiver.GetComponent<City>();
+                send();
             }
         }
-        count -= Time.deltaTime;
-        if(count <= 0)
-        {
-            send();
-            count = length * .1f * length;
-        }
     }
+
 
 }

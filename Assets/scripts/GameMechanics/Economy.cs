@@ -10,11 +10,11 @@ public class Economy : MonoBehaviour {
 
    private float timer = 10f;
 
-    private int _treasure;
-    private int _income = 0;
-    private int _buildCosts = 0;
-    private int _maintenance = 0;
-    private int _revenue;
+    private float _treasure;
+    private float _income = 0;
+    private float _buildCosts = 0;
+    private float _maintenance = 0;
+    private float _revenue;
 
     private Game game;
 
@@ -57,34 +57,32 @@ public class Economy : MonoBehaviour {
         return collectors;
     }
     //
-    public int treasure()
+    public float treasure()
     {
         return _treasure;
     }
-    public void treasure(int value)
+    public void treasure(float value)
     {
          _treasure += value;
     }
     //
-    public int buildCosts()
+    public float buildCosts()
     {
         return _buildCosts;
     }
-    public void buildCosts(int value)
+    public void buildCosts(float value)
     {
         _buildCosts += value;
     }
     //
-    public int revenue()
+    public float revenue()
     {
         return _revenue;
     }
-    public void revenue(int value)
+    public void revenue(float value)
     {
         _revenue += value;
     }
-
-
     private void Update()
     {
         timer -= Time.deltaTime;

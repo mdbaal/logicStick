@@ -5,7 +5,7 @@ using UnityEngine;
 public class Road : MonoBehaviour {
 
     public GameObject[] roadPieces;
-    private float animationSpeed = .2f;
+    public float animationSpeed = .2f;
     private int index = 0;
     //
     public void init(GameObject[] road)

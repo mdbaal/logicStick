@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class City : MonoBehaviour {
-
     
-    public float resource;
 
     private void Start()
     {
         this.name = "City";
+       
     }
+    
     //add profit made to the revenue
-    public void profit(int _profit)
+    public void profit(Resource resource,float amount)
     {
-        this.GetComponentInParent<Economy>().revenue(_profit);
+        float profit = 0;
+        profit = resource.amount() * resource.price(); 
+        this.GetComponentInParent<Economy>().revenue(profit);
+        print("profit: " + profit);
     }
+    
+
 }

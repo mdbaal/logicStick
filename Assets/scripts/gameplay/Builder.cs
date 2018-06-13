@@ -261,7 +261,7 @@ public class Builder : MonoBehaviour {
         if (pos1 == null || pos2 == null) return;
         //create parent road object where all roadpieces will be children of
         GameObject road = new GameObject();
-        road.name = "road";
+        road.name = "Road";
         road.AddComponent<Road>();
         road.AddComponent<Conveyer>();
         road.transform.parent = this.transform;
@@ -270,7 +270,7 @@ public class Builder : MonoBehaviour {
         
 
         //calculate the size and cost of the road
-        int size = Mathf.RoundToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
+        int size = Mathf.FloorToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
         if (size <= 0) return;
         if (economy.treasure() - roadCost * size < 0) { print("not enough money"); return; }
         float lerpValue = 0;

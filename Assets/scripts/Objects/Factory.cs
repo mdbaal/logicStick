@@ -16,26 +16,24 @@ public class Factory : MonoBehaviour {
 
     private void Start()
     {
-        resource1 = new Ore();
-        resource1.amount(100);
-        
         conveyer = this.GetComponent<Conveyer>();
         this.name = "Factory";
     }
 
     private void Update()
     {
-        if (resource1 != null) checkRecipe();
+        if (recipe == null && resource1 != null) checkRecipe();
         //every 2 seconds double resources
         timer -= Time.deltaTime;
         if (timer <= 0)
-        {
-            conveyer.resource = conveyer.resource * 2f;
+        { 
             timer = 2f;
             craftResources();
-            print(output + " amount:  " + output.amount());
+            
         }
-        
+        if (conveyer.resource == null) conveyer.resource = output;
+
+        if (conveyer.resource != null && output != null && output.amount() > 20) toConveyer();
         
     }
     //create output resource from input
@@ -48,7 +46,9 @@ public class Factory : MonoBehaviour {
             checkRecipe();
             return;
         }
-        //craft according to the size off the recipe
+        //craft according to the size of the recipe
+        
+
         switch (recipe.size)
         {
             case 1:
@@ -102,4 +102,65 @@ public class Factory : MonoBehaviour {
         }
     }
 
+    public void receive(Resource r,float amount)
+    {
+        if (resource1 == null)
+        {
+            resource1 = r;
+        }
+        else if(resource2 == null)
+        {
+            resource2 = r;
+        }
+        else if(resource3 == null)
+        {
+            resource3 = r;
+        }
+
+        if(resource1.GetType() == r.GetType())
+        {
+            resource1.amount(amount);
+            return;
+        }
+        else if (resource2.GetType() == r.GetType())
+        {
+            resource2.amount(amount);
+            return;
+        }
+        else if (resource3.GetType() == r.GetType())
+        {
+            resource3.amount(amount);
+            return;
+        }
+
+        if (resource1.GetType() != r.GetType())
+        {
+            resource1 = r;
+            resource1.amount(amount);
+        }
+        else if (resource2.GetType() != r.GetType())
+        {
+            resource2 = r;
+            resource2.amount(amount);
+        }
+        else if (resource3.GetType() != r.GetType())
+        {
+            resource3 = r;
+            resource3.amount(amount);
+        }
+    }
+
+    public void toConveyer()
+    {
+        if (conveyer.resource.GetType() == output.GetType())
+        {
+            conveyer.resource.amount(output.amount());
+            output.amount(-output.amount());
+        }
+        else
+        {
+            conveyer.resource = output;
+            output.amount(-output.amount());
+        }
+    }
 }

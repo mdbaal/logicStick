@@ -8,5 +8,6 @@ public class Ore : Resource
     {
         //set recipe for next 'tier' of resource
         this.recipe(new Recipe(this, null, null, new Iron(),.3f));
+
     }
 }
