@@ -12,7 +12,7 @@ public class Factory : MonoBehaviour {
 
     private Recipe recipe;
 
-    private Resource output;
+    public Resource output;
 
     private void Start()
     {
@@ -46,7 +46,7 @@ public class Factory : MonoBehaviour {
             checkRecipe();
             return;
         }
-        //craft according to the size of the recipe
+        //craft according to the _size of the recipe
         
 
         switch (recipe.size)

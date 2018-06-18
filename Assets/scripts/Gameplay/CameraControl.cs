@@ -61,9 +61,9 @@ public class CameraControl : MonoBehaviour {
             cam.transform.position = new Vector2(0, transform.position.y);
         }
         //right
-        if (cam.transform.position.x > game.getSize())
+        if (cam.transform.position.x > game.size())
         {
-            cam.transform.position = new Vector2(game.getSize(), transform.position.y);
+            cam.transform.position = new Vector2(game.size(), transform.position.y);
         }
         //up
         if (cam.transform.position.y < 0)
@@ -71,9 +71,9 @@ public class CameraControl : MonoBehaviour {
             cam.transform.position = new Vector2(transform.position.x, 0);
         }
         //down
-        if (cam.transform.position.y > game.getSize())
+        if (cam.transform.position.y > game.size())
         {
-            cam.transform.position = new Vector2(transform.position.x, game.getSize());
+            cam.transform.position = new Vector2(transform.position.x, game.size());
         }
     }
 }

@@ -68,39 +68,49 @@ public class DebugConsole : MonoBehaviour {
             case "fcam":
                 print("free cam");
                 cam.GetComponent<CameraControl>().restricted = false;
+                deInitCosole();
                 return;
             case "lcam":
                 print("locked cam");
                 cam.GetComponent<CameraControl>().restricted = true;
+                deInitCosole();
                 return;
             case "onebillion":
                 print("billionare");
                 economy.treasure(1000000000);
+                deInitCosole();
                 return;
             case "highvalue":
                 print("market rise");
+                deInitCosole();
                 return;
             case "lowvalue":
                 print("market drop");
+                deInitCosole();
                 return;
             case "1x":
                 Time.timeScale = 1;
                 print("time scale 1");
+                deInitCosole();
                 return;
             case "2x":
                 Time.timeScale = 2;
                 print("time scale 2");
+                deInitCosole();
                 return;
             case "3x":
                 Time.timeScale = 3;
                 print("time scale 3");
+                deInitCosole();
                 return;
             case "nothing":
                 economy.treasure(-economy.treasure());
                 print("nothing at all");
+                deInitCosole();
                 return;
 
         }
+        
     }
 
     private void Update()

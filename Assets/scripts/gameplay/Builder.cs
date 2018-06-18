@@ -15,10 +15,6 @@ public class Builder : MonoBehaviour {
     private bool bulldozer;
     private bool shiftBuild;
 
-    public int factoryCost;
-    public int collectorCost;
-    public int roadCost;
-
     private GameObject sender;
     private GameObject receiver;
     private GameObject hitObject;
@@ -208,7 +204,7 @@ public class Builder : MonoBehaviour {
         //if its 1 build collector
         if (index == 1)
         {
-            if (economy.treasure() - collectorCost < 0) { print("not enough money"); return;}
+            if (economy.treasure() - economy._collectorCost < 0) { print("not enough money"); return;}
             
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
             if (hit.transform == null) return;
@@ -220,12 +216,12 @@ public class Builder : MonoBehaviour {
                 GameObject g = Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
                 g.GetComponent<Collector>().deposit = hit.transform.gameObject.GetComponent<Deposit>();
                 economy.collector(1);
-                economy.buildCosts(collectorCost);
+                economy.buildCosts(economy._collectorCost);
             }
         }
         else //else it is a factory
         {
-            if(economy.treasure() - factoryCost < 0) { print("not enough money"); return; }
+            if(economy.treasure() - economy._factoryCost < 0) { print("not enough money"); return; }
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.down);
             if (hit.transform == null)//can only be placed on empty spots
             {
@@ -233,7 +229,7 @@ public class Builder : MonoBehaviour {
                 buildPos.z = 1;
                 Instantiate(BuildPieces[index], buildPos, Quaternion.identity, this.transform);
                 economy.factory(1);
-                economy.buildCosts(factoryCost);
+                economy.buildCosts(economy._factoryCost);
             }
         }
         //check is still in shift mode
@@ -269,10 +265,10 @@ public class Builder : MonoBehaviour {
         road.GetComponent<Conveyer>().receiver = this.receiver.GetComponent<Conveyer>();
         
 
-        //calculate the size and cost of the road
+        //calculate the _size and cost of the road
         int size = Mathf.FloorToInt(Vector3.Distance(pos1.transform.position, pos2.transform.position)/ frequencyRoad);
         if (size <= 0) return;
-        if (economy.treasure() - roadCost * size < 0) { print("not enough money"); return; }
+        if (economy.treasure() - economy._roadCost * size < 0) { print("not enough money"); return; }
         float lerpValue = 0;
         float distance = 1;
         distance = 1f / size;
@@ -289,7 +285,6 @@ public class Builder : MonoBehaviour {
             receiver = null;
         }
         economy.road(size);
-        economy.buildCosts(2 * size);
         road.GetComponent<Road>().init(roadPieces);
         if (!shiftBuild)
         {
@@ -303,5 +298,4 @@ public class Builder : MonoBehaviour {
             roadBuild = true;
         }
     }
-    
 }

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Iron : Resource
-{
-    public Iron()
+public class Wheat :Resource {
+
+    public Wheat()
     {
         //set recipe for next 'tier' of resource
-        this.recipe(new Recipe(this, new Wood(), null, new Tools(),.2f));
+        this.recipe(new Recipe(this, null, null, new Bread(), .4f));
     }
+	
 }
-   

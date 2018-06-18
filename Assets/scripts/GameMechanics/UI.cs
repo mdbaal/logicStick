@@ -26,7 +26,8 @@ public class UI : MonoBehaviour {
     public void play()
     {
         //start a new game
-        SceneManager.LoadSceneAsync("Prototype", LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync("Game", LoadSceneMode.Single);
+        Time.timeScale = 1;
     }
 
     public void resume()
@@ -38,7 +39,7 @@ public class UI : MonoBehaviour {
     public void stop()
     {
         //if in main menu, stop the application, if in pause menu, go back to main menu
-        if (SceneManager.GetActiveScene().name == "Prototype")
+        if (SceneManager.GetActiveScene().name == "Game")
         {
             SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
         }

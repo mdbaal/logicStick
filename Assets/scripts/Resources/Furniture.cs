@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tools : Resource
+public class Furniture : Resource
 {
-    public Tools()
-    {
-       
-    }
+
+	
 }
-   
